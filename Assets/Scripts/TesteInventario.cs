@@ -15,5 +15,7 @@ public class TesteInventario : MonoBehaviour
         inventario.AdicionarItem(pocao, 5);
 
         inventario.AdicionarItem(espada, 1);
+
+        inventario.RemoverItem(pocao, 2);
     }
 }

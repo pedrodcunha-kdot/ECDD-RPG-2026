@@ -30,4 +30,25 @@ public class SistemaInventario : MonoBehaviour
         //Adicionado o slot ao inventario
         inventario.Add(novoSlot);
     }
+
+    public void RemoverItem(DadosItem item, int quantidade)
+    {
+        //1. Verifica se o item existe no inventário
+        foreach(SlotInventario slot in inventario)
+        {
+            if (slot.dadosDoItem == item)
+            {
+                //1.1 Subtrai a quantidade desejada de itens
+                slot.SubtrairQuantidade(quantidade);
+                Debug.Log($"Subtraido - {quantidade} ao item {item.nomeDoItem}. Total: {slot.quantidade}");
+                if (slot.quantidade <= 0)
+                {
+                    //Remove o item do inventario
+                    inventario.Remove(slot);
+                    Debug.Log($"Slot removido: {item.nomeDoItem}");
+                    return;
+                }
+            }
+        }
+    }
 }
