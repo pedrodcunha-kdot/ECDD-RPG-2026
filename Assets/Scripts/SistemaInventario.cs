@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 
 public class SistemaInventario : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class SistemaInventario : MonoBehaviour
                 {
                     inventario[i].AdicionarQuantidade(quantidade);
                     Debug.Log($"Adicionado + {quantidade} ao item {itemParaAdicionar.nomeDoItem}");
-                   
-                    if(onInventarioMudou != null)
+
+                    if (onInventarioMudou != null)
                     {
                         onInventarioMudou.Invoke();
                     }
@@ -68,6 +69,18 @@ public class SistemaInventario : MonoBehaviour
             }
         }
     }
+    public bool TemItem(DadosItem item, int qtd)
+    {
+        foreach (SlotInventario slot in inventario)
+        {
+            if (slot.dadosDoItem == item && slot.quantidade >= qtd)
+            {
+                return true;
+
+            }
+        }
+        return false;
+    }
 
     public void ModificadorMoedas(int valor)
     {
@@ -82,4 +95,19 @@ public class SistemaInventario : MonoBehaviour
             onInventarioMudou.Invoke();
         }
     }
+
+    // --- MÁGICA PARA O EDITOR ---
+    // Esta função é chamada automaticamente pela Unity quando você altera
+    // um valor no Inspector. Assim, podemos ver a UI mudar em tempo real!
+    private void OnValidate()
+    {
+        // Só executa se o jogo estiver rodando para evitar erros
+        if (Application.isPlaying && onInventarioMudou != null)
+        {
+            onInventarioMudou.Invoke();
+        }
+    }
+
+
+
 }
